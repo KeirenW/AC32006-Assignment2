@@ -1,0 +1,53 @@
+@font-face {
+    font-family: "Product Sans";
+    src: url("../resources/ProductSans.ttf");
+}
+
+* {
+	font-family: 'Product Sans', sans-serif;
+}
+
+body {
+	background-image: url(../resources/bg-home.jpg);
+	background-size: cover;
+	margin-bottom: 60px !important;
+}
+
+.jumbotron {
+	background-image: url(../resources/calmac.gif);
+	background-size: tile;
+}
+
+.noLeftPadding {
+	padding-left: 0 !important;
+}
+
+.navbar {
+	background-color: RoyalBlue;
+}
+
+.navbar-brand {
+	padding-left: 1em;
+	padding-right: 1.5em;
+	color: white;
+}
+
+.headshot {
+	background-color: none;
+	object-fit: fill;
+}
+
+.testimonials {
+	padding-top: 1.5em;
+	margin-top: 7rem;
+}
+
+.footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background-color: #e9ecef;
+	line-height: 60px;
+	vertical-align: middle;
+}

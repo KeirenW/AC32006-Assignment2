@@ -1,0 +1,39 @@
+@font-face {
+    font-family: "Product Sans";
+    src: url("../resources/ProductSans.ttf");
+}
+
+* {
+	font-family: 'Product Sans', sans-serif;
+}
+
+body {
+	margin-bottom: 60px !important;
+}
+
+.navbar {
+	background-color: RoyalBlue;
+}
+
+.navbar-brand {
+	padding-left: 1em;
+	padding-right: 1.5em;
+	color: white;
+}
+
+.form-register {
+	max-width: 330px;
+	margin: auto;
+	padding: 15px;
+	padding-top: 3rem;
+}
+
+.footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background-color: #e9ecef;
+	line-height: 60px;
+	vertical-align: middle;
+}
