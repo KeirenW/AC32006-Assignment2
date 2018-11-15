@@ -3,35 +3,12 @@
     session_start();
 
     $user = $_SESSION["login_user"];
-  
-    if($_SERVER["REQUEST_METHOD"] == "POST") {
-        // date and test sent to database sent from form 
-        $myTestName = mysqli_real_escape_string($db,$_POST['appointment']);
-        $myDate = mysqli_real_escape_string($db,$_POST['date']);
-        $testCode = mysql_query("SELECT TestCode FROM test WHERE Name = '$myTestName'");
-        $result = mysql_fetch_array($testCode);
-        $myAppointmentID = rand();
-        $myStaff = rand(1, 30);
-        $myRoom = rand(1, 10);
-        $sql = "INSERT INTO appointment (AppointmentNumber, StaffID, PatientID, RoomNumber, TestCode, Datetime)
-        VALUES ('$myAppointmentID', '$myStaff', '$result', '$myRoom', '5', '$myDate')";
-
-if ($db->query($sql) === TRUE) {
-    echo "Appointment Created";
-    header("location:index.php");
-} else {
-    echo "Error: " . $sql . "<br>" . $db->error;
-}
-
-$db->close();      
-    }
-
 ?>
 
 <html>
     <head>
         <title>GodivaLabs - Tests</title>
-        <link rel="stylesheet" type="text/css" href="./css/appointment.css">
+        <link rel="stylesheet" type="text/css" href="./css/prescription.css">
         <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="./js/bootstrap.min.js"></script>
@@ -83,35 +60,41 @@ $db->close();
 
         <!-- Get tests from DB -->
         <?php
-            //$sql = "SELECT TestCode,Name,Description,Price,InsuranceCovered FROM test";
-            //$result = mysqli_query($db,$sql);
+            $result = $db->query("SELECT PatientID FROM patient WHERE Email = '$user'");
+            $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+            $userID = $row["PatientID"];
+            $sql = "SELECT * FROM prescriptions WHERE PatientID = '$userID'";
+            $result = mysqli_query($db,$sql);
         ?>
 
         <main role="main" class="container">
             <div class="row">
-                <table class="table table-hover">
+                <form class="text-center mx-auto logo">
+                    <img class="mb-4" src="./resources/logo.svg" alt="" width="100" height="100">
+                    <h1 class="h3 mb-3 font-weight-normal">Godivalabs</h1>
+                </form>
+                <table class="table table-hover text-center">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Insurance</th>
+                        <th scope="col">Drug</th>
+                        <th scope="col">Dosage</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Prescribed by</th>
                     </tr>
                     </thead>
                     <tbody>
                         <?php
                             while($row = $result->fetch_assoc()) {
+                                $staff = $row["PrescribedBy"];
+                                $sql = $db->query("SELECT Name FROM staff WHERE StaffID = '$staff'");
+                                $staff = mysqli_fetch_array($sql,MYSQLI_ASSOC);
                                 echo "<tr>";
-                                    echo '<th scope=\"row\">' . $row["TestCode"] . '</th>';
-                                    echo "<td>" . $row["Name"] ."</td>";
-                                    echo "<td>" . $row["Description"] ."</td>";
-                                    echo "<td> £" . $row["Price"] ."</td>";
-                                    if($row["InsuranceCovered"] == '1') {
-                                        echo "<td>" . "Covered" ."</td>";
-                                    } else {
-                                        echo "<td>" . "Not covered" ."</td>";
-                                    }
+                                    echo '<th scope=\"row\">' . $row["Drug"] . '</th>';
+                                    echo "<td>" . $row["Dosage"] ."</td>";
+                                    echo "<td>" . $row["Quantity"] ."</td>";
+                                    echo "<td>" . $row["Duration"] ."</td>";
+                                    echo "<td>" . $staff["Name"] ."</td>";
                                 echo "</tr>";
                             }
                         ?>

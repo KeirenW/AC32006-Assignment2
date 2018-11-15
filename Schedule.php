@@ -67,21 +67,26 @@
 
 
         <main role="main" class="container-fluid">
+
+
+        
             <div class="row">
                 <div class="col-md-9 pane-left">
                     <!-- List appointment -->
                         <tbody>
                             <?php
-                            
                                 if(isset($_GET['StaffID']))
                                 {  
                                     if(isset($_GET['Datetime']))
                                     {  
                                         $StaffID = $_GET['StaffID'];
                                         $Datetime = $_GET['Datetime'];
-                                        $sql = "SELECT AppointmentNumber,StaffID,PatientID,RoomNumber,Datetime,TestCode,Symptoms,FollowUp,Appointmentcol FROM appointment where $StaffID = appointment.StaffID and $Datetime = appointment.Datetime";
+                                        $sql = "SELECT AppointmentNumber,StaffID,PatientID,RoomNumber,Datetime,TestCode,Symptoms,FollowUp FROM appointment where $StaffID = appointment.StaffID and $Datetime = appointment.Datetime";
                                         $result = mysqli_query($db,$sql);
+
                                         while($row = $result->fetch_assoc()) {
+
+
                                             echo "<dl>";
                                             echo "<dt>"."Appointment:".$row['AppointmentNumber']."</dt>";
                                             echo "<li>"."StaffID:".$row['StaffID']."</li>";
@@ -91,14 +96,13 @@
                                             echo "<li>"."TestCode:".$row['TestCode']."</li>";
                                             echo "<li>"."Symptoms:".$row['Symptoms']."</li>";
                                             echo "<li>"."FollowUp:".$row['FollowUp']."</li>";
-                                            echo "<li>"."Appointmentcol:".$row['Appointmentcol']."</li>";
                                             echo "</dl>";
                                         }
                                     }else{
                                         $StaffID = $_GET['StaffID'];
-                                        $sql = "SELECT AppointmentNumber, StaffID, PatientID,RoomNumber,Datetime,TestCode,Symptoms,FollowUp,Appointmentcol FROM appointment where $StaffID = appointment.StaffID";
+                                        $sql = "SELECT * FROM appointment where $StaffID = appointment.StaffID";
                                         $result = mysqli_query($db,$sql);
-                                        while($row = $result->fetch_assoc()){
+                                        while ($row = $result->fetch_assoc()) {
                                             echo "<dl>";
                                             echo "<dt>"."Appointment:".$row['AppointmentNumber']."</dt>";
                                             echo "<li>"."StaffID:".$row['StaffID']."</li>";
@@ -108,27 +112,47 @@
                                             echo "<li>"."TestCode:".$row['TestCode']."</li>";
                                             echo "<li>"."Symptoms:".$row['Symptoms']."</li>";
                                             echo "<li>"."FollowUp:".$row['FollowUp']."</li>";
-                                            echo "<li>"."Appointmentcol:".$row['Appointmentcol']."</li>";
                                             echo "</dl>";
                                         }
                                     }
                                 }
-                                    else{
-                                        header("Location: https://zeno.computing.dundee.ac.uk/2018-ac32006/Team18/LogOut.php"); 
-                                        exit;
+                                else{
+                                    $sql = "SELECT AppointmentNumber,StaffID,PatientID,RoomNumber,Datetime,TestCode,Symptoms,FollowUp FROM appointment ";
+                                    $result = mysqli_query($db,$sql);
+
+                                    while($row = $result->fetch_assoc()) {
+
+
+                                        echo "<dl>";
+                                        echo "<dt>"."Appointment:".$row['AppointmentNumber']."</dt>";
+                                        echo "<li>"."StaffID:".$row['StaffID']."</li>";
+                                        echo "<li>"."PatientID:".$row['PatientID']."</li>";
+                                        echo "<li>"."RoomNumber:".$row['RoomNumber']."</li>";
+                                        echo "<li>"."Datetime:".$row['Datetime']."</li>";
+                                        echo "<li>"."TestCode:".$row['TestCode']."</li>";
+                                        echo "<li>"."Symptoms:".$row['Symptoms']."</li>";
+                                        echo "<li>"."FollowUp:".$row['FollowUp']."</li>";
+                                        echo "</dl>";
                                     }
+                            
+                                }
+                                
                         
                             ?>
                         </tbody>
-  
+                        <hr>
                 </div>
                 
 
+                
+
+
                 <!-- Get user details from DB -->
                 <?php
-                    $sql = "SELECT Name,DoB,PhoneNumber,Email FROM patient WHERE Email = '$user'";
+                    $sql = "SELECT PatientID, Name,DoB,PhoneNumber,Email FROM patient WHERE Email = '$user'";
                     $result = mysqli_query($db,$sql);
                     $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+                    
                 ?>
                 <div class="col-md-3 pane-right text-center">
                     <h1 class="mt-5">My details</h1>
@@ -138,7 +162,13 @@
                         <li><i class="material-icons">phone</i><?php echo $row["PhoneNumber"] ?></li>
                         <li><i class="material-icons">email</i><?php echo $row["Email"] ?></li>
                     </ul>
-
+                    <div class="container text-center bookAppointment">
+                        <h1 class="mt-5">Select Date</h1>
+                        <form action="" method="POST">
+                            <input type="date" name="date">
+                            <input type="submit" name="submit" value="submit">
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>

@@ -22,13 +22,20 @@
         //$cookie_name = "email";
         if($countP == 1) {
             $_SESSION["login_user"] = $myEmail;
-            //echo $_SESSION["login_user"];
+            $_SESSION["user_type"] = "Patient";
+
             header("location:appointment.php");
             exit;
             //Logged in as patient and redirect to home page.
         } else if($countD == 1) {
             $_SESSION["login_user"] = $myEmail;
-            header("location:appointment.php");
+            $sqlJ = "SELECT JobTitle FROM staff WHERE email = '$myEmail'";
+            $resultJ = mysqli_query($db,$sqlD);
+            $rowJ = mysqli_fetch_array($resultD,MYSQLI_ASSOC);
+            echo $rojJ["JobTitle"];
+            $_SESSION["user_type"] = $rowJ;
+
+            header("location:doctor/index.php");
             exit;
             //Logged in as staff and redirect to staff home page.
         } else {
