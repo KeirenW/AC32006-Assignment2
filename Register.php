@@ -37,6 +37,7 @@
 <html>
     <head>
         <title>GodivaLabs - Register</title>
+        <link rel="icon" href="./resources/favicon.ico" type="image/x-icon"/>
         <link rel="stylesheet" type="text/css" href="./css/register.css">
         <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
         <script src="./js/bootstrap.min.js"></script>
@@ -75,10 +76,16 @@
             <input type="text" id="inputOccupation" name ="Occupation" class="form-control" placeholder="Occupation" required="">
             <label for="inputMedicalHistory" class="sr-only">Medical History</label>
             <input type="text" id="inputMedicalHistory" name ="MedicalHistory" class="form-control" placeholder="MedicalHistory" required="">
-            <label for="inputSmoker" class="sr-only">Smoker</label>
-            <input type="text" id="inputSmoker" name ="Smoker" class="form-control" placeholder="Smoker" required="">
-            <label for="inputHasInsurance" class="sr-only">HasInsurance</label>
-            <input type="text" id="inputHasInsurance" name ="HasInsurance" class="form-control" placeholder="HasInsurance" required="">
+            <label for="inputSmoker">Do you smoke?</label>
+            <select class="form-control" id="inputSmoker" name="Smoker" required="">
+                <option selected>No</option>
+                <option>Yes</option>
+            </select>
+            <label for="inputHasInsurance">Do you have insurance?</label>
+            <select class="form-control" id="inputHasInsurance" name="HasInsurance" required="">
+                <option selected>No</option>
+                <option>Yes</option>
+            </select>
 
             <label><a href="index.php" class="text-muted">Already have an account?</a></label>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>

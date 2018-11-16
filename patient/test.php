@@ -1,7 +1,11 @@
 <?php
-    include("db.php");
+    include("../db.php");
     session_start();
 
+    $userType = $_SESSION["user_type"];
+    if($userType != "Patient") {
+        header("location:../LogOut.php");
+    }
     $user = $_SESSION["login_user"];
   
     if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -37,8 +41,9 @@ $db->close();
 <html>
     <head>
         <title>GodivaLabs - Tests</title>
-        <link rel="stylesheet" type="text/css" href="./css/appointment.css">
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+        <link rel="icon" href="../resources/favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="../css/appointment.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="./js/bootstrap.min.js"></script>
     </head>
@@ -51,26 +56,20 @@ $db->close();
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto text-center">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="test.php">
                                 <i class="material-icons">local_hospital</i>
-                                <p>Tests</p>
+                                <p>Appointments</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="Results.php">
                                 <i class="material-icons">mail</i>
                                 <p>Results</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="material-icons">question_answer</i>
-                                <p>Queries</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="history.php">
+                            <a class="nav-link" href="myDetails.php">
                                 <i class="material-icons">folder</i>
                                 <p>My Details</p>
                             </a>
@@ -82,7 +81,7 @@ $db->close();
                             </a>
                         </li>
                     </ul>
-                    <a href="LogOut.php"><button class="btn btn-outline-warning my-2 my-sm-0" href="#">Sign out</button></a>
+                    <a href="../LogOut.php"><button class="btn btn-outline-warning my-2 my-sm-0" href="../LogOut.php">Sign out</button></a>
                 </div>
             </nav>
         </header>
@@ -161,8 +160,8 @@ $db->close();
                                 </select>
                             </div>
                             <div class="form-group mx-auto w-50">
-                                <label for="exampleInputPassword1">Date</label>
-                                <input type="date" class="form-control" id="inputDate" placeholder="Date" name="date">
+                                <label for="exampleInputPassword1">Date/Time</label>
+                                <input type="datetime-local" class="form-control" id="inputDate" placeholder="Date" name="date">
                             </div>
                             <button class="btn btn-success" href="#">Submit</button>
                         </form>

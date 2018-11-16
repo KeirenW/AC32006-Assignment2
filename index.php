@@ -32,6 +32,7 @@
 <html>
     <head>
         <title>GodivaLabs - Home</title>
+        <link rel="icon" href="./resources/favicon.ico" type="image/x-icon"/>
         <link rel="stylesheet" type="text/css" href="./css/index.css">
         <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
         <script src="./js/bootstrap.min.js"></script>

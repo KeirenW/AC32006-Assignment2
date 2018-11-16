@@ -8,13 +8,7 @@
 }
 
 body {
-	background-image: url(../resources/bg-home.jpg);
-	background-size: cover;
 	margin-bottom: 60px !important;
-}
-
-.noLeftPadding {
-	padding-left: 0 !important;
 }
 
 .navbar {
@@ -24,17 +18,21 @@ body {
 .navbar-brand {
 	padding-left: 1em;
 	padding-right: 1.5em;
-	color: white;
 }
 
-.headshot {
-	background-color: none;
-	object-fit: fill;
+.nav-item {
+	padding-right: 1em;
+	line-height: 100%;
+	vertical-align: middle;
 }
 
-.testimonials {
-	padding-top: 1.5em;
-	margin-top: 7rem;
+.nav-link {
+	padding-top: 1em !important;
+	padding-bottom: 0 !important;
+}
+
+.logo {
+    padding-top: 5%;
 }
 
 .footer {

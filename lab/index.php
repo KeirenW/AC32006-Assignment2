@@ -1,15 +1,20 @@
 <?php
-    include("db.php");
+    include("../db.php");
     session_start();
 
     $user = $_SESSION["login_user"];
+    $userType = $_SESSION["user_type"];
+    if($userType != "Lab") {
+        header("location:../LogOut.php");
+    }
 ?>
 
 <html>
     <head>
-        <title>GodivaLabs - Tests</title>
-        <link rel="stylesheet" type="text/css" href="./css/prescription.css">
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+        <title>GodivaLabs - Test Results</title>
+        <link rel="icon" href="../resources/favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="../css/results.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="./js/bootstrap.min.js"></script>
     </head>
@@ -22,80 +27,71 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto text-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="index.php">
                                 <i class="material-icons">local_hospital</i>
                                 <p>Tests</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="material-icons">mail</i>
-                                <p>Results</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="material-icons">question_answer</i>
-                                <p>Queries</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="history.php">
+                            <a class="nav-link" href="mydetails.php">
                                 <i class="material-icons">folder</i>
                                 <p>My Details</p>
                             </a>
                         </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="prescription.php">
-                                <i class="material-icons">list</i>
-                                <p>Prescriptions</p>
-                            </a>
-                        </li>
-                    </ul>
-                    <a href="LogOut.php"><button class="btn btn-outline-warning my-2 my-sm-0" href="#">Sign out</button></a>
+                        </ul>
+                    <a href="../LogOut.php"><button class="btn btn-outline-warning my-2 my-sm-0" href="../LogOut.php">Sign out</button></a>
                 </div>
             </nav>
         </header>
 
-        <!-- Get tests from DB -->
+        <!-- Get results from DB -->
         <?php
-            $result = $db->query("SELECT PatientID FROM patient WHERE Email = '$user'");
+            //Get patient ID
+            $result = $db->query("SELECT StaffID FROM staff WHERE Email = '$user'");
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-            $userID = $row["PatientID"];
-            $sql = "SELECT * FROM prescriptions WHERE PatientID = '$userID'";
+            $userID = $row["StaffID"];
+            //Get test details
+            $sql = "SELECT TestCode,Datetime,StaffID,Result from appointment";
             $result = mysqli_query($db,$sql);
         ?>
 
         <main role="main" class="container">
             <div class="row">
                 <form class="text-center mx-auto logo">
-                    <img class="mb-4" src="./resources/logo.svg" alt="" width="100" height="100">
+                    <img class="mb-4" src="../resources/logo.svg" alt="" width="100" height="100">
                     <h1 class="h3 mb-3 font-weight-normal">Godivalabs</h1>
                 </form>
                 <table class="table table-hover text-center">
                     <thead>
                     <tr>
-                        <th scope="col">Drug</th>
-                        <th scope="col">Dosage</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Duration</th>
-                        <th scope="col">Prescribed by</th>
+                        <th scope="col">Test</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Conducted by</th>
+                        <th scope="col">Result</th>
                     </tr>
                     </thead>
                     <tbody>
                         <?php
                             while($row = $result->fetch_assoc()) {
-                                $staff = $row["PrescribedBy"];
-                                $sql = $db->query("SELECT Name FROM staff WHERE StaffID = '$staff'");
-                                $staff = mysqli_fetch_array($sql,MYSQLI_ASSOC);
-                                echo "<tr>";
-                                    echo '<th scope=\"row\">' . $row["Drug"] . '</th>';
-                                    echo "<td>" . $row["Dosage"] ."</td>";
-                                    echo "<td>" . $row["Quantity"] ."</td>";
-                                    echo "<td>" . $row["Duration"] ."</td>";
-                                    echo "<td>" . $staff["Name"] ."</td>";
-                                echo "</tr>";
+                                $date = $row["Datetime"];
+                                $testResult = $row["Result"];
+                                $staffID = $row["StaffID"];
+                                $testCode = $row["TestCode"];
+                                $getName = $db->query("SELECT Name FROM staff WHERE StaffID = '$staffID'");
+                                $staff = mysqli_fetch_array($getName,MYSQLI_ASSOC);
+                                $staffName = $staff["Name"];
+                                $getTest = $db->query("SELECT Name FROM test WHERE TestCode = '$testCode'");
+                                $test = mysqli_fetch_array($getTest,MYSQLI_ASSOC);
+                                $testName = $test["Name"];
+                                if($row["Result"] == "") {
+                                    echo "<tr>";
+                                        echo '<th scope=\"row\">' . $testName . '</th>';
+                                        echo "<td>" . $row["Datetime"] ."</td>";
+                                        echo "<td>" . $staffName ."</td>";
+                                        echo "<td>" . $row["Result"] ."</td>";
+                                    echo "</tr>";
+                                }
                             }
                         ?>
                     </tbody>

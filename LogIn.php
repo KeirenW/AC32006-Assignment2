@@ -17,25 +17,31 @@
       
         $countP = mysqli_num_rows($resultP);
         $countD = mysqli_num_rows($resultD);
-      
+
         // If result matched $myusername and $mypassword, table row must be 1 row
         //$cookie_name = "email";
         if($countP == 1) {
             $_SESSION["login_user"] = $myEmail;
             $_SESSION["user_type"] = "Patient";
 
-            header("location:appointment.php");
+            header("location:patient/test.php");
             exit;
             //Logged in as patient and redirect to home page.
         } else if($countD == 1) {
             $_SESSION["login_user"] = $myEmail;
             $sqlJ = "SELECT JobTitle FROM staff WHERE email = '$myEmail'";
-            $resultJ = mysqli_query($db,$sqlD);
-            $rowJ = mysqli_fetch_array($resultD,MYSQLI_ASSOC);
+            $resultJ = mysqli_query($db,$sqlJ);
+            $rowJ = mysqli_fetch_array($resultJ,MYSQLI_ASSOC);
             echo $rojJ["JobTitle"];
-            $_SESSION["user_type"] = $rowJ;
-
-            header("location:doctor/index.php");
+            $jobTitle = $rowJ["JobTitle"];
+            $_SESSION["user_type"] = $jobTitle;
+            if($jobTitle == "Doctor") {
+                header("location:doctor/index.php");
+            } else if($jobTitle == "Pharmacist") {
+                header("location:chemist/index.php");
+            } else {
+                header("location:lab/index.php");
+            }
             exit;
             //Logged in as staff and redirect to staff home page.
         } else {
@@ -47,6 +53,7 @@
 <html>
     <head>
         <title>GodivaLabs - Log In</title>
+        <link rel="icon" href="./resources/favicon.ico" type="image/x-icon"/>
         <link rel="stylesheet" type="text/css" href="./css/login.css">
         <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
         <script src="./js/bootstrap.min.js"></script>

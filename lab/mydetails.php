@@ -1,7 +1,11 @@
 <?php
-    include("db.php");
+    include("../db.php");
     session_start();
     $user = $_SESSION["login_user"];
+    $userType = $_SESSION["user_type"];
+    if($userType != "Lab") {
+        header("location:../LogOut.php");
+    }
     
     if($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = mysqli_real_escape_string($db,$_POST['name']);
@@ -26,10 +30,11 @@
 <html>
     <head>
         <title>GodivaLabs - My Details</title>
-        <link rel="stylesheet" type="text/css" href="./css/history.css">
-        <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
+        <link rel="icon" href="./resources/favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="../css/details.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <script src="./js/bootstrap.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
     </head>
     <body>
         <header>
@@ -39,46 +44,28 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav mr-auto text-center">
+                <ul class="navbar-nav mr-auto text-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="appointment.php">
+                            <a class="nav-link" href="index.php">
                                 <i class="material-icons">local_hospital</i>
-                                <p>Appointments</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="material-icons">mail</i>
-                                <p>Results</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="material-icons">question_answer</i>
-                                <p>Queries</p>
+                                <p>Tests</p>
                             </a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="mydetails.php">
                                 <i class="material-icons">folder</i>
                                 <p>My Details</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="material-icons">list</i>
-                                <p>Prescriptions</p>
-                            </a>
-                        </li>
                     </ul>
-                    <a href="LogOut.php"><button class="btn btn-outline-warning my-2 my-sm-0" href="#">Sign out</button></a>
+                    <a href="../LogOut.php"><button class="btn btn-outline-warning my-2 my-sm-0" href="../LogOut.php">Sign out</button></a>
                 </div>
             </nav>
         </header>
 
         <!-- Get details from DB -->
         <?php
-            $sql = "SELECT * FROM patient WHERE email = '$user'";
+            $sql = "SELECT * FROM staff WHERE email = '$user'";
             $result = mysqli_query($db,$sql);
             $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
         ?>
@@ -86,7 +73,7 @@
         <main role="main">
             <div class="container">
                 <form class="text-center form-update" method="post">
-                    <img class="mb-4" src="./resources/logo.svg" alt="" width="100" height="100">
+                    <img class="mb-4" src="../resources/logo.svg" alt="" width="100" height="100">
                     <h1 class="h3 mb-3 font-weight-normal">Godivalabs</h1>
                     <div class="form-row">
                         <div class="form-group col-md-7">
@@ -119,25 +106,11 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="job">Occupation</label>
-                            <?php echo "<input type=\"text\" class=\"form-control\" id=\"job\" name=\"job\" value='" . $row["Occupation"] . "'>"; ?>
+                            <?php echo "<input type=\"text\" class=\"form-control\" id=\"job\" name=\"job\" value='" . $row["JobTitle"] . "'>"; ?>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="insurance">Has Insurance</label>
-                            <select class="custom-select" id="insuranceSelect" name="insurance">
-                                <?php
-                                    if($row["HasInsurance"] == "1") {
-                                        echo "<option selected>Yes</option>";
-                                        echo "<option>No</option>";
-                                    } else {
-                                        echo "<option selected>No</option>";
-                                        echo "<option>Yes</option>";
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label for="gender">Gender</label>
                             <select class="custom-select" id="gender" name="gender">
                                 <?php
@@ -151,19 +124,9 @@
                                 ?>
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="smoker">Smoker</label>
-                            <select class="custom-select" id="smoker" name="smoker">
-                                <?php
-                                    if($row["Smoker"] == "1") {
-                                        echo "<option selected>Yes</option>";
-                                        echo "<option>No</option>";
-                                    } else {
-                                        echo "<option selected>No</option>";
-                                        echo "<option>Yes</option>";
-                                    }
-                                ?>
-                            </select>
+                        <div class="form-group col-md-6">
+                            <label for="salary">Salary</label>
+                            <?php echo "<input type=\"text\" class=\"form-control\" id=\"salary\" name=\"salary\" value='" . $row["Salary"] . "'>"; ?>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-warning">Update</button>
