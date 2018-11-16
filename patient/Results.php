@@ -99,7 +99,7 @@
                                 echo "<tr>";
                                     echo '<th scope=\"row\">' . $testName . '</th>';
                                     echo "<td>" . $row["Datetime"] ."</td>";
-                                    echo "<td>" . $staffName ."</td>";
+                                    echo "<td>Dr. " . $staffName ."</td>";
                                     if($row["Result"] == "") {echo "<td>Pending</td>";}
                                     echo "<td>" . $row["Result"] ."</td>";
                                 echo "</tr>";

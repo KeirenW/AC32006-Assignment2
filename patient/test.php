@@ -19,7 +19,7 @@
         $rowP = mysqli_fetch_array($resultTC,MYSQLI_ASSOC);
         $rowD = mysqli_fetch_array($resultPID,MYSQLI_ASSOC);
         $myAppointmentID = rand();
-        $myStaff = rand(1, 30);
+        $myStaff = rand(1, 10);
         $myRoom = rand(1, 10);
         $PatientID = $rowD["PatientID"];
         $TestCode = $rowP["TestCode"];
