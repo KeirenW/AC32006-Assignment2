@@ -2,7 +2,7 @@
     include("../db.php");
     session_start();
     $user = $_SESSION["login_user"];
-
+    $userType = $_SESSION["user_type"];
     if($userType != "Pharmacist") {
         header("location:../LogOut.php");
     }

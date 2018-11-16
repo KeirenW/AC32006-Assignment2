@@ -54,7 +54,7 @@
                             </a>
                         </li>
                     </ul>
-                    <a href="..LogOut.php"><button class="btn btn-outline-warning my-2 my-sm-0" href="#">Sign out</button></a>
+                    <a href="../LogOut.php"><button class="btn btn-outline-warning my-2 my-sm-0" href="#">Sign out</button></a>
                 </div>
             </nav>
 

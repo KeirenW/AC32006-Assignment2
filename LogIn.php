@@ -15,6 +15,8 @@
         $rowP = mysqli_fetch_array($resultP,MYSQLI_ASSOC);
         $rowD = mysqli_fetch_array($resultD,MYSQLI_ASSOC);
       
+
+
         $countP = mysqli_num_rows($resultP);
         $countD = mysqli_num_rows($resultD);
 
